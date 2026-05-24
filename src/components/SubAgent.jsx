@@ -2,9 +2,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { STATUS_LABELS } from '../data/agents'
 import ThinkingAnimation from './ThinkingAnimation'
 
-export default function SubAgent({ agent, status, work }) {
+export default function SubAgent({ agent, status, work, artifacts = [], onViewResult }) {
   const isActive = status !== 'IDLE'
   const showWorkPanel = work?.active || status === 'WORKING' || status === 'REPORTING'
+  const hasResults = artifacts.length > 0
 
   return (
     <motion.div
@@ -77,6 +78,31 @@ export default function SubAgent({ agent, status, work }) {
           </span>
           {status === 'THINKING' && <ThinkingAnimation small />}
         </div>
+
+        <AnimatePresence>
+          {hasResults && (
+            <motion.div
+              className="sub-agent__results"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+            >
+              {artifacts.map((artifact) => (
+                <motion.button
+                  key={artifact.filename}
+                  type="button"
+                  className="sub-agent__result-btn"
+                  style={{ '--agent-color': agent.color }}
+                  onClick={() => onViewResult(artifact)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  결과물 보기 · {artifact.title ?? artifact.filename}
+                </motion.button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </motion.div>
   )

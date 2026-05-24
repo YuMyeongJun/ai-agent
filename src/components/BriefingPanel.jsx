@@ -60,7 +60,7 @@ export default function BriefingPanel({ results, visible, onDismiss }) {
                     hidden: { opacity: 0, y: 30 },
                     visible: { opacity: 1, y: 0 },
                   }}
-                  whileHover={{ y: -4, boxShadow: '0 8px 32px rgba(0, 212, 255, 0.15)' }}
+                  whileHover={{ y: -4, boxShadow: 'var(--shadow-md)' }}
                 >
                   <motion.div className="briefing-card__head">
                     <span className="briefing-card__icon">{item.icon}</span>
