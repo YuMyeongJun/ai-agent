@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body { font: 12px Inter, sans-serif; margin: 12px; color: #333; }
+    label { display: block; font-weight: 600; margin: 8px 0 4px; }
+    input, textarea { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
+    textarea { height: 72px; resize: vertical; font-family: monospace; font-size: 11px; }
+    button { margin-top: 12px; width: 100%; padding: 10px; background: #7ba87b; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    button:disabled { opacity: 0.5; }
+    .hint { color: #666; font-size: 11px; margin-top: 8px; line-height: 1.4; }
+    .error { color: #c0392b; font-size: 11px; margin-top: 8px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <label>Import JSON URL</label>
+  <input id="url" placeholder="http://localhost:8000/api/workspace/{session}/designer-1_figma_import.json" />
+  <label>또는 JSON 직접 붙여넣기</label>
+  <textarea id="json" placeholder='{"mission":"...","frames":[...]}'></textarea>
+  <button id="run">Generate Frames</button>
+  <p class="hint">AI Virtual Office 디자이너 단계 산출물 figma_import.json을 불러와 Figma 프레임을 생성합니다.</p>
+  <p class="error" id="error"></p>
+  <script>
+    const urlInput = document.getElementById('url');
+    const jsonInput = document.getElementById('json');
+    const errorEl = document.getElementById('error');
+    document.getElementById('run').onclick = async () => {
+      errorEl.textContent = '';
+      let spec = null;
+      try {
+        if (jsonInput.value.trim()) {
+          spec = JSON.parse(jsonInput.value.trim());
+        } else if (urlInput.value.trim()) {
+          const res = await fetch(urlInput.value.trim());
+          if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+          spec = await res.json();
+        } else {
+          throw new Error('URL 또는 JSON을 입력하세요.');
+        }
+        parent.postMessage({ pluginMessage: { type: 'import', spec } }, '*');
+      } catch (e) {
+        errorEl.textContent = String(e.message || e);
+      }
+    };
+  </script>
+</body>
+</html>

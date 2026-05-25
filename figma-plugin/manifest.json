@@ -1,0 +1,12 @@
+{
+  "name": "AI Virtual Office Importer",
+  "id": "ai-virtual-office-importer",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["http://localhost:8000", "http://127.0.0.1:8000", "https://*"]
+  }
+}

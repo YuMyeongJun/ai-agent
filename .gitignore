@@ -25,3 +25,11 @@ dist-ssr
 
 # Environment variables
 .env
+
+# Python / runtime
+.venv/
+
+# Generated outputs
+output/
+workspace/
+data/

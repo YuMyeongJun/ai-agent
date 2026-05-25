@@ -5,12 +5,16 @@ FastAPI server that orchestrates agent missions, streams Claude responses via SS
 ## Setup
 
 ```bash
-# 1. Python venv (recommended)
+# From project root (not backend/)
+
+# 1. Python venv (recommended; skip if .venv/ already exists)
 python3 -m venv .venv
 source .venv/bin/activate
 
-# 2. Install dependencies
-pip install -r backend/requirements.txt
+# 2. Install dependencies (macOS: bare `pip` may be missing — use venv pip or python3 -m pip)
+.venv/bin/pip install -r backend/requirements.txt
+# Optional MusicGen deps (torch/audiocraft are large — skip if you only need music21/MIDI)
+# .venv/bin/pip install torch torchaudio audiocraft
 
 # 3. Environment
 cp .env.example .env
